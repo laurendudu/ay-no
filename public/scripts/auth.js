@@ -9,31 +9,7 @@ adminform.addEventListener('submit', (e) => {
     });
 });
 
-// Listen for auth status changes
-auth.onAuthStateChanged(user => {
-    if (user) {
-        user.getIdTokenResult().then(idTokenResult => {
-            user.admin = idTokenResult.claims.admin;
-        });
-        db.collection('exercises').onSnapshot(snapshot => {
-            setupGuides(snapshot.docs);
-            setupUI(user);
-        }, err => {
-            console.log(err.message);
-        });
-        db.collection('mcq').onSnapshot(snapshot => {
-            setupDashboard(snapshot.docs);
-        }, err => {
-            console.log(err.message);
-        });
-    } else {
-        setupUI();
-        setupGuides([]);
-        setupDashboard([]);
-    };
-});
-
-// Creat a new guide
+// Create a new guide
 const createForm = document.querySelector('#create-form');
 createForm.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -63,7 +39,8 @@ signupForm.addEventListener('submit', (e) => {
     // Sign up the user
     auth.createUserWithEmailAndPassword(email, password).then(cred => {
         return db.collection('users').doc(cred.user.uid).set({
-            bio: signupForm['signup-bio'].value
+            bio: signupForm['signup-bio'].value,
+            level: 0
         });
     }).then(() => {
         const modal = document.querySelector('#modal-signup');
