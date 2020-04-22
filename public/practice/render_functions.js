@@ -55,6 +55,19 @@ function mcq(q, questions) {
             </div>
             `;
             vector.push(1);
+
+          auth.onAuthStateChanged((user) => {
+
+            db.collection("users").doc(user.uid).collection("xp").add({
+                  "level": 100,
+                "date":  firebase.firestore.Timestamp.now()
+        
+            });
+            db.collection("users").doc(user.uid).update({
+                "q_correct": firebase.firestore.FieldValue.increment(1),
+            });
+        
+        });
         } else {
             quizUI.innerHTML += `
             <div class="row">
@@ -72,6 +85,13 @@ function mcq(q, questions) {
             </div>
             `;
             vector.push(0);
+        
+            auth.onAuthStateChanged((user) => {
+
+                db.collection("users").doc(user.uid).update({
+                    "q_incorrect": firebase.firestore.FieldValue.increment(1),
+              });
+            });
         }
         quizUI.innerHTML += `
         <button class="btn waves-effect waves-light" id="next-btn">
@@ -164,6 +184,20 @@ function fillTheGap(q, questions) {
             </div>
             `;
             vector.push(1);
+
+            auth.onAuthStateChanged((user) => {
+
+                db.collection("users").doc(user.uid).collection("xp").add({
+                      "level": 150,
+                    "date":  firebase.firestore.Timestamp.now()
+            
+                });
+
+                db.collection("users").doc(user.uid).update({
+                    "q_correct": firebase.firestore.FieldValue.increment(1),
+              });
+            
+            });
         } else {
             quizUI.innerHTML += `
             <div class="row">
@@ -181,6 +215,13 @@ function fillTheGap(q, questions) {
             </div>
             `;
             vector.push(0);
+
+            auth.onAuthStateChanged((user) => {
+
+                db.collection("users").doc(user.uid).update({
+                    "q_incorrect": firebase.firestore.FieldValue.increment(1),
+              });
+            });
         }
         quizUI.innerHTML += `
         <button class="btn waves-effect waves-light" id="next-btn">
@@ -280,6 +321,20 @@ function syntax(q, questions) {
             </div>
             `;
             vector.push(1);
+
+            auth.onAuthStateChanged((user) => {
+
+                db.collection("users").doc(user.uid).collection("xp").add({
+                      "level": 200,
+                    "date":  firebase.firestore.Timestamp.now()
+            
+                });
+
+                db.collection("users").doc(user.uid).update({
+                    "q_correct": firebase.firestore.FieldValue.increment(1),
+              });
+            
+            });
         } else {
             quizUI.innerHTML += `
             <div class="row">
@@ -297,6 +352,9 @@ function syntax(q, questions) {
             </div>
             `;
             vector.push(0);
+            db.collection("users").doc(user.uid).update({
+                "q_incorrect": firebase.firestore.FieldValue.increment(1),
+            });
         }
 
         quizUI.innerHTML += `
