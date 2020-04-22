@@ -40,7 +40,9 @@ signupForm.addEventListener('submit', (e) => {
     auth.createUserWithEmailAndPassword(email, password).then(cred => {
         return db.collection('users').doc(cred.user.uid).set({
             bio: signupForm['signup-bio'].value,
-            level: 0
+            level: 0,
+            q_incorrect: 0,
+            q_correct: 0,
         });
     }).then(() => {
         const modal = document.querySelector('#modal-signup');
